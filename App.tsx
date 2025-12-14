@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, MessageCircle, Menu, X, Check, Star, ShieldCheck, Clock, Truck } from 'lucide-react';
+import { ShoppingBag, MessageCircle, Menu, X } from 'lucide-react';
 import { JerseyConfig, JERSEY_PRICES } from './types';
 import Hero from './components/Hero';
 import Customizer from './components/Customizer';

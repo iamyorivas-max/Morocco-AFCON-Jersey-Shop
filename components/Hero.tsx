@@ -13,12 +13,13 @@ const Hero: React.FC<HeroProps> = ({ scrollToCustomize }) => {
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 7);
 
-    const timer = setInterval(() => {
+    // Use window.setInterval to explicitly use the browser API and avoid NodeJS type inference issues during build
+    const timer = window.setInterval(() => {
       const now = new Date();
       const difference = deadline.getTime() - now.getTime();
 
       if (difference <= 0) {
-        clearInterval(timer);
+        window.clearInterval(timer);
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
@@ -28,7 +29,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToCustomize }) => {
       }
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
