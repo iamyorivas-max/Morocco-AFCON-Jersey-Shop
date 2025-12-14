@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { JerseyConfig, JERSEY_PRICES } from '../types';
 import { Send, CheckCircle, AlertTriangle } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface OrderFormProps {
   config: JerseyConfig;
 }
 
 const OrderForm: React.FC<OrderFormProps> = ({ config }) => {
+  const { t, dir } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -20,6 +22,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ config }) => {
   const handleWhatsAppOrder = () => {
     if (!isFormValid) return;
 
+    // We keep the actual message in English/French as it goes to the seller
     const message = `
 *NEW AFCON JERSEY ORDER* 🇲🇦
 ------------------
@@ -50,44 +53,44 @@ Please confirm my order!
         
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="bg-morocco-green p-6 text-center">
-            <h2 className="text-2xl font-bold text-white uppercase tracking-wide">Secure Your Order</h2>
-            <p className="text-green-100 text-sm mt-1">Cash on Delivery Available Nationwide</p>
+            <h2 className="text-2xl font-bold text-white uppercase tracking-wide">{t.order.title}</h2>
+            <p className="text-green-100 text-sm mt-1">{t.order.subtitle}</p>
           </div>
 
           <div className="p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
             
             {/* Order Summary */}
             <div className="bg-gray-50 p-6 rounded-xl h-fit">
-              <h3 className="font-bold text-gray-900 mb-4 border-b pb-2">Order Summary</h3>
+              <h3 className="font-bold text-gray-900 mb-4 border-b pb-2">{t.order.summary}</h3>
               
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Jersey Color:</span>
+                  <span className="text-gray-600">{t.order.color}:</span>
                   <span className="font-medium capitalize">{config.color}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Size:</span>
+                  <span className="text-gray-600">{t.order.size}:</span>
                   <span className="font-medium">{config.size}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Custom Name:</span>
+                  <span className="text-gray-600">{t.order.customName}:</span>
                   <span className="font-medium">{config.name || '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Custom Number:</span>
+                  <span className="text-gray-600">{t.order.customNumber}:</span>
                   <span className="font-medium">{config.number || '-'}</span>
                 </div>
               </div>
 
               <div className="flex justify-between items-end border-t border-gray-200 pt-4">
-                <span className="text-gray-600">Total to Pay:</span>
+                <span className="text-gray-600">{t.order.total}:</span>
                 <span className="text-3xl font-display font-bold text-morocco-red">{totalPrice} DH</span>
               </div>
 
               {!isFormValid && (
                 <div className="mt-6 flex items-start gap-2 text-yellow-600 text-xs bg-yellow-50 p-3 rounded">
-                  <AlertTriangle size={16} />
-                  <p>Please fill in your shipping details to enable the order button.</p>
+                  <AlertTriangle size={16} className="shrink-0" />
+                  <p>{t.order.alert}</p>
                 </div>
               )}
             </div>
@@ -95,7 +98,7 @@ Please confirm my order!
             {/* Form Fields */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.order.fullName}</label>
                 <input 
                   type="text" 
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-morocco-green outline-none"
@@ -106,36 +109,33 @@ Please confirm my order!
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number (WhatsApp)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.order.phone}</label>
                 <input 
                   type="tel" 
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-morocco-green outline-none"
-                  placeholder="06 00 00 00 00"
+                  placeholder="06 00 00 00 00 text-right"
+                  style={{ direction: 'ltr', textAlign: dir === 'rtl' ? 'right' : 'left' }}
                   value={formData.phone}
                   onChange={e => setFormData({...formData, phone: e.target.value})}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.order.city}</label>
                 <select 
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-morocco-green outline-none bg-white"
                   value={formData.city}
                   onChange={e => setFormData({...formData, city: e.target.value})}
                 >
-                  <option value="">Select City</option>
-                  <option value="Casablanca">Casablanca</option>
-                  <option value="Rabat">Rabat</option>
-                  <option value="Marrakech">Marrakech</option>
-                  <option value="Tangier">Tangier</option>
-                  <option value="Agadir">Agadir</option>
-                  <option value="Fes">Fes</option>
-                  <option value="Other">Other</option>
+                  <option value="">{t.order.selectCity}</option>
+                  {t.order.cities.map(c => (
+                     <option key={c} value={c}>{c}</option>
+                  ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t.order.quantity}</label>
                 <div className="flex items-center gap-4">
                   <button 
                     type="button"
@@ -160,13 +160,13 @@ Please confirm my order!
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
-                <Send size={20} />
-                Confirm Order via WhatsApp
+                <Send size={20} className="rtl:rotate-180" />
+                {t.order.cta}
               </button>
               
               <p className="text-center text-xs text-gray-400 mt-4 flex items-center justify-center gap-1">
                 <CheckCircle size={12} className="text-green-500" />
-                No payment required now. Pay upon delivery.
+                {t.order.noPayment}
               </p>
             </div>
 

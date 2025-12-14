@@ -1,6 +1,7 @@
 import React from 'react';
 import { JerseyConfig } from '../types';
 import { RefreshCcw } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
 
 interface CustomizerProps {
   config: JerseyConfig;
@@ -8,14 +9,13 @@ interface CustomizerProps {
 }
 
 const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
+  const { t } = useLanguage();
   
   // Handlers
   const handleChange = (field: keyof JerseyConfig, value: string) => {
-    // Cast value to any to avoid TypeScript strict union type errors during build
     setConfig(prev => ({ ...prev, [field]: value as any }));
   };
 
-  // Color mappings for visual representation
   const getColorClass = (c: string) => {
     switch(c) {
       case 'red': return 'bg-morocco-red text-white';
@@ -44,8 +44,8 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
     <section className="py-20 bg-white" id="customize-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold tracking-wide text-morocco-red uppercase mb-2">Personalization Studio</h2>
-          <h3 className="font-display text-4xl md:text-5xl font-bold text-gray-900">DESIGN YOUR KIT</h3>
+          <h2 className="text-sm font-bold tracking-wide text-morocco-red uppercase mb-2">{t.customizer.title}</h2>
+          <h3 className="font-display text-4xl md:text-5xl font-bold text-gray-900">{t.customizer.subtitle}</h3>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 items-center">
@@ -54,25 +54,20 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
           <div className="w-full lg:w-1/2 relative flex justify-center bg-gray-50 rounded-3xl p-8 border border-gray-100 shadow-inner">
             <div className="relative w-full max-w-md aspect-[4/5] md:aspect-square flex items-center justify-center">
               
-              {/* SVG Jersey Representation */}
               <svg viewBox="0 0 512 512" className="w-full h-full drop-shadow-2xl filter" style={{ transition: 'fill 0.3s ease' }}>
                 <g transform="translate(0,0)">
-                  {/* Base Shirt */}
                   <path 
                     d="M378.5,64.5 L345,32 L256,50 L167,32 L133.5,64.5 L90,120 L120,150 L150,130 L150,450 L362,450 L362,130 L392,150 L422,120 Z" 
                     fill={getJerseySvgColor()} 
                     stroke="rgba(0,0,0,0.1)" 
                     strokeWidth="2"
                   />
-                  {/* Neck details */}
                   <path d="M200,50 Q256,90 312,50" fill="none" stroke={config.color === 'red' ? '#006233' : '#C1272D'} strokeWidth="8" />
-                  {/* Sleeve stripes */}
                   <rect x="95" y="110" width="30" height="5" transform="rotate(-45 110 112)" fill="#F1B434" />
                   <rect x="387" y="110" width="30" height="5" transform="rotate(45 402 112)" fill="#F1B434" />
                 </g>
               </svg>
 
-              {/* Overlays for Name and Number */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pt-10 pointer-events-none">
                 <span 
                   className="font-display font-bold text-4xl sm:text-5xl uppercase tracking-wider mb-2"
@@ -89,11 +84,10 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
               </div>
             </div>
 
-            {/* Reset Button */}
             <button 
               onClick={() => setConfig({name: '', number: '', size: 'M', color: 'red'})}
-              className="absolute top-4 right-4 p-2 bg-white rounded-full shadow hover:bg-gray-100 text-gray-500"
-              title="Reset"
+              className="absolute top-4 right-4 rtl:right-auto rtl:left-4 p-2 bg-white rounded-full shadow hover:bg-gray-100 text-gray-500"
+              title={t.customizer.reset}
               type="button"
             >
               <RefreshCcw size={20} />
@@ -104,9 +98,8 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
           <div className="w-full lg:w-1/2 space-y-8">
             <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
               
-              {/* Color Selection */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">Select Color</label>
+                <label className="block text-sm font-medium text-gray-700 mb-3">{t.customizer.color}</label>
                 <div className="flex gap-4">
                   {['red', 'green', 'white', 'black'].map((c) => (
                     <button
@@ -122,22 +115,21 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
                 </div>
               </div>
 
-              {/* Input Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name on Back</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t.customizer.nameLabel}</label>
                   <input
                     type="text"
                     maxLength={12}
                     value={config.name}
                     onChange={(e) => handleChange('name', e.target.value.toUpperCase())}
-                    placeholder="e.g. ZIYECH"
+                    placeholder={t.customizer.namePlaceholder}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-morocco-red focus:border-morocco-red outline-none font-display uppercase tracking-wide"
                   />
-                  <span className="text-xs text-gray-400 mt-1">Max 12 characters</span>
+                  <span className="text-xs text-gray-400 mt-1">{t.customizer.maxChars}</span>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Jersey Number</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t.customizer.numberLabel}</label>
                   <input
                     type="text"
                     maxLength={2}
@@ -152,9 +144,8 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
                 </div>
               </div>
 
-              {/* Size Selection */}
               <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-3">Select Size</label>
+                <label className="block text-sm font-medium text-gray-700 mb-3">{t.customizer.sizeLabel}</label>
                 <div className="flex flex-wrap gap-3">
                   {['S', 'M', 'L', 'XL', '2XL'].map((s) => (
                     <button
@@ -173,10 +164,9 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
                 </div>
               </div>
 
-              {/* Note */}
               <div className="bg-blue-50 text-blue-800 p-4 rounded-lg text-sm flex gap-3 items-start">
                  <RefreshCcw size={18} className="mt-0.5 flex-shrink-0" />
-                 <p>Preview is approximate. The final product features high-quality heat-pressed vinyl printing that lasts.</p>
+                 <p>{t.customizer.note}</p>
               </div>
 
             </div>
