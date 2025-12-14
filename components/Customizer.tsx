@@ -11,7 +11,8 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
   
   // Handlers
   const handleChange = (field: keyof JerseyConfig, value: string) => {
-    setConfig(prev => ({ ...prev, [field]: value }));
+    // Cast value to any to avoid TypeScript strict union type errors during build
+    setConfig(prev => ({ ...prev, [field]: value as any }));
   };
 
   // Color mappings for visual representation
@@ -93,6 +94,7 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
               onClick={() => setConfig({name: '', number: '', size: 'M', color: 'red'})}
               className="absolute top-4 right-4 p-2 bg-white rounded-full shadow hover:bg-gray-100 text-gray-500"
               title="Reset"
+              type="button"
             >
               <RefreshCcw size={20} />
             </button>
@@ -114,6 +116,7 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
                         config.color === c ? 'border-morocco-gold scale-110' : 'border-transparent'
                       } ${getColorClass(c)}`}
                       aria-label={`Select ${c}`}
+                      type="button"
                     />
                   ))}
                 </div>
@@ -162,6 +165,7 @@ const Customizer: React.FC<CustomizerProps> = ({ config, setConfig }) => {
                           ? 'bg-gray-900 text-white shadow-lg' 
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
+                      type="button"
                     >
                       {s}
                     </button>

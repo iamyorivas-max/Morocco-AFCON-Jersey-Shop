@@ -138,11 +138,13 @@ Please confirm my order!
                 <label className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
                 <div className="flex items-center gap-4">
                   <button 
+                    type="button"
                     className="w-10 h-10 rounded-full bg-gray-200 text-xl font-bold hover:bg-gray-300"
                     onClick={() => setFormData({...formData, quantity: Math.max(1, formData.quantity - 1)})}
                   >-</button>
                   <span className="text-xl font-bold w-8 text-center">{formData.quantity}</span>
                   <button 
+                    type="button"
                     className="w-10 h-10 rounded-full bg-gray-200 text-xl font-bold hover:bg-gray-300"
                     onClick={() => setFormData({...formData, quantity: formData.quantity + 1})}
                   >+</button>
