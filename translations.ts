@@ -38,7 +38,9 @@ export const translations = {
       numberLabel: "Jersey Number",
       sizeLabel: "Select Size",
       note: "Preview is approximate. The final product features high-quality heat-pressed vinyl printing that lasts.",
-      maxChars: "Max 12 characters"
+      maxChars: "Max 12 characters",
+      viewFront: "View Front",
+      viewBack: "View Back"
     },
     benefits: {
       title: "WHY CHOOSE THIS KIT?",
@@ -135,7 +137,9 @@ export const translations = {
       numberLabel: "Numéro",
       sizeLabel: "Choisir la Taille",
       note: "L'aperçu est approximatif. Le produit final utilise une impression vinyle haute qualité.",
-      maxChars: "Max 12 caractères"
+      maxChars: "Max 12 caractères",
+      viewFront: "Vue Face",
+      viewBack: "Vue Dos"
     },
     benefits: {
       title: "POURQUOI CE MAILLOT ?",
@@ -232,7 +236,9 @@ export const translations = {
       numberLabel: "الرقم",
       sizeLabel: "اختر القياس",
       note: "المعاينة تقريبية. المنتج النهائي يتميز بطباعة حرارية عالية الجودة تدوم طويلاً.",
-      maxChars: "حد أقصى 12 حرف"
+      maxChars: "حد أقصى 12 حرف",
+      viewFront: "شوف القدام",
+      viewBack: "شوف اللور"
     },
     benefits: {
       title: "علاش تختار هاد التوني؟",
